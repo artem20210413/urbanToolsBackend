@@ -12,7 +12,9 @@ use Illuminate\Support\Carbon;
  * @property integer id
  * @property string name
  * @property string description
- * @property string coordinates
+ * @property double latitude
+ * @property double longitude
+ * @property string location
  * @property bool active
  * @property Carbon created_at
  * @property Carbon updated_at

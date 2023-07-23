@@ -16,8 +16,9 @@ use Illuminate\Support\Carbon;
  * @property integer city_id
  * @property string name
  * @property string description
- * @property string coordinates
- * @property string coordinate_name
+ * @property double latitude // широта
+ * @property double longitude // долгота
+ * @property string location
  * @property string image_main_paths
  * @property bool active
  * @property Carbon created_at

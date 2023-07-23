@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\ApiException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Services\Auth\AuthService;
@@ -18,7 +19,7 @@ class AuthController extends Controller
             $token = $service->login(...$credentials);
 
             return success(['token' => $token]);
-        } catch (\Exception $e) {
+        } catch (ApiException $e) {
 
             return error($e);
         }
@@ -36,7 +37,7 @@ class AuthController extends Controller
             $service->registration($credentials);
 
             return success();
-        } catch (\Exception $e) {
+        } catch (ApiException $e) {
 
             return error($e);
         }

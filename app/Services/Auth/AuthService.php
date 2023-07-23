@@ -30,21 +30,29 @@ class AuthService
 
     public function loginUser(User $user): string
     {
-        $userToken = $this->tokenORM->save(['userId' => $user->id]);
+        $userToken = new UserToken();
+        $userToken->user_id = $user->id;
+        $userToken = $this->tokenORM->save($userToken);
 
         return $userToken->token;
     }
 
     public function registration(array $credentials): User
     {
-        return $this->userORM->save($credentials);
+//        dd($credentials);
+        $user = new User();
+        $user->name = $credentials['name'] ?? null;
+        $user->login = $credentials['login'] ?? null;
+//        $user->setPasswordAttribute($credentials['password']);
+
+        return $this->userORM->saveUser($user, $credentials['password']);
     }
 
     public function check(?string $token): ?User
     {
         $tokenUser = $this->tokenORM->search($token);
 
-        return $tokenUser ? $this->userORM->find($tokenUser->user_id) : null;
+        return $tokenUser ? $this->userORM->findActive($tokenUser->user_id) : null;
     }
 
     public function lifeToken(): void

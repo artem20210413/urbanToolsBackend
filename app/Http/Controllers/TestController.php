@@ -52,27 +52,27 @@ class TestController extends Controller
             'images.*' => 'required|image|max:10240', // Максимальный размер 10 МБ
         ]);
 
-        dd($request);
+//        dd($request);
 //        if ($request->hasFile('images')) {
-        $image = $request->file('image');
-        $image2 = $request->file('image2');
+        $images = $request->file('images');
+//        $image2 = $request->file('image2');
 //dd($images);
-//        foreach ($images as $image) {
-            // Валидация и сохранение каждой загруженной картинки
-//            if ($image->isValid()) {
+//        dump('satart');
+//        dd($images);
+        foreach ($images as $image) {
+//            dump($image);
+//             Валидация и сохранение каждой загруженной картинки
+            if ($image->isValid()) {
                 $filename = $image->getClientOriginalName();
                 $path[] = $image->storeAs('images', $filename, 'public');
-                $filename = $image2->getClientOriginalName();
-                $path[] = $image2->storeAs('images', $filename, 'public');
 
-                dd($path);
-                // Дополнительные операции с сохраненными картинками, если нужно
-//            }
-//        }
-
+//                dd($path);
+//                 Дополнительные операции с сохраненными картинками, если нужно
+            }
+        }
         return response()->json(['message' => 'Картинки успешно загружены']);
 //        }
-
+//dd('end');
         return response()->json(['message' => 'Нет выбранных картинок'], 400);
     }
 

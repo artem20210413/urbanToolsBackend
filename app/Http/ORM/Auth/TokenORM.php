@@ -22,25 +22,31 @@ class TokenORM implements iORM
         return UserToken::find($id);
     }
 
+    public function findActive(int $id)
+    {
+        return UserToken::query()->where('id', $id)->where('active', 1)->first();
+    }
+
     public function search(string $token)//: ?UserToken
     {
         return UserToken::query()->where('token', $token)->where('active', 1)->first();
     }
 
+    /**
+     * @param UserToken $template
+     * @return UserToken|null
+     */
 
-    public function save(array $form): ?UserToken
+    public function save(mixed $template): ?UserToken
     {
-        $userId = $form['userId'] ?? null;
-        $active = $form['active'] ?? null;
-
-        if (!$userId) {
+        if (!$template->user_id) {
             return null;
         }
 
         $userToken = new UserToken();
-        $userToken->user_id = $userId;
-        $userToken->token = Session::getId();
-        $userToken->active = $active ?? true;
+        $userToken->user_id = $template->user_id ?? $userToken->user_id;
+        $userToken->token = $template->token ?? $userToken->token ?? Session::getId();
+        $userToken->active = $template->active ?? $userToken->active ?? true;
         $userToken->save();
 
         return $userToken;
@@ -52,4 +58,19 @@ class TokenORM implements iORM
         $this->find($id)->delete();
     }
 
+    public function deactivate(int $id): mixed
+    {
+        $token = $this->find($id);
+        $token->active = false;
+
+        return $this->save($token);
+    }
+
+    public function activate(int $id): mixed
+    {
+        $token = $this->find($id);
+        $token->active = true;
+
+        return $this->save($token);
+    }
 }

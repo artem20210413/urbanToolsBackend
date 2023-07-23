@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 256);
             $table->string('description', 1024);
-            $table->string('coordinates', 256);
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
+            $table->string('location', 256);
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });

@@ -16,9 +16,9 @@ return new class extends Migration {
             $table->unsignedBigInteger('city_id');
             $table->string('name', 256);
             $table->text('description');
-//            $table->string('description', 16383);
-            $table->string('coordinates', 256);
-            $table->string('coordinate_name', 256);
+            $table->decimal('latitude', 10, 7);
+            $table->decimal('longitude', 10, 7);
+            $table->string('location', 256);
             $table->string('image_main_paths', 256);
             $table->tinyInteger('active')->default(1);
             $table->timestamps();

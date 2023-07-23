@@ -11,7 +11,13 @@ interface iORM
 
     public function find(int $id);
 
-    public function save(array $form);
+    public function findActive(int $id);
+
+    public function save(mixed $template): mixed;
 
     public function delete(int $id): void;
+
+    public function deactivate(int $id): mixed;
+
+    public function activate(int $id): mixed;
 }
