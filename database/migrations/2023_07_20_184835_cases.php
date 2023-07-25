@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('cluster_id');
             $table->unsignedBigInteger('city_id');
             $table->string('name', 256);
+            $table->string('alias', 256);
             $table->text('description');
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);

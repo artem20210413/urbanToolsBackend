@@ -3,13 +3,19 @@
 namespace App\Http\ORM\Urban;
 
 use App\Http\ORM\iORM;
+use App\Http\ORM\iUrbanORM;
 use App\Models\Cluster;
 use Illuminate\Database\Eloquent\Collection;
 
-class ClusterORM implements iORM
+class ClusterORM implements iUrbanORM
 {
 
     public function all(): Collection
+    {
+        return Cluster::all();
+    }
+
+    public function allActive(): Collection
     {
         return Cluster::query()->where('active', 1)->get();
     }
@@ -64,4 +70,5 @@ class ClusterORM implements iORM
 
         return $this->save($cluster);
     }
+
 }

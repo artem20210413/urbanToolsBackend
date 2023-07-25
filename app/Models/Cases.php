@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property integer cluster_id
  * @property integer city_id
  * @property string name
+ * @property string alias
  * @property string description
  * @property double latitude // широта
  * @property double longitude // долгота

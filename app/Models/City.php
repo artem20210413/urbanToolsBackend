@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
  * @package App\Models
  * @property integer id
  * @property string name
+ * @property string alias
  * @property string description
  * @property double latitude
  * @property double longitude
