@@ -1,7 +1,7 @@
 <?php
 
 if (!function_exists('success')) {
-    function success(array $data = [], int $status = 200): Illuminate\Http\JsonResponse
+    function success(mixed $data = [], int $status = 200): Illuminate\Http\JsonResponse
     {
         return response()->json([
             'success' => true,

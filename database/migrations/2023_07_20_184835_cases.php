@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->string('location', 256);
-            $table->string('image_main_paths', 256);
+            $table->string('image_main_path', 256)->nullable();
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
 

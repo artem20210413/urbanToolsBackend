@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property double latitude // широта
  * @property double longitude // долгота
  * @property string location
- * @property string image_main_paths
+ * @property string image_main_path
  * @property bool active
  * @property Carbon created_at
  * @property Carbon updated_at

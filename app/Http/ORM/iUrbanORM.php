@@ -9,7 +9,7 @@ interface iUrbanORM extends iORM
 {
     static function allActive(): Collection;
 
-    static function findActive(int $id);
+    static function findActive(int $id, bool $exception = true);
 
     static function deactivate(int $id): mixed;
 

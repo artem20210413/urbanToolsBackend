@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class UserResource extends MainResource
 {
     private ?string $token;
 
@@ -30,17 +30,4 @@ class UserResource extends JsonResource
         ];
     }
 
-    public function withResponse($request, $response)
-    {
-        // Get the data from the resource using toArray()
-        $data = $this->toArray($request);
-
-        // Set the data directly in the response, without the 'data' key
-        $response->setData($data);
-    }
-
-    public function toPlainArray()
-    {
-        return $this->toArray(request());
-    }
 }

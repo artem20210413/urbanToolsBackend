@@ -2,6 +2,7 @@
 
 namespace App\Http\ORM\Urban;
 
+use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\iORM;
 use App\Http\ORM\iUrbanORM;
 use App\Models\City;
@@ -26,9 +27,19 @@ class ClusterORM implements iUrbanORM
         return Cluster::find($id);
     }
 
-    static function findActive(int $id)
+    /**
+     * @param int $id
+     * @param bool $exception
+     * @return Cluster
+     * @throws ApiException
+     */
+    static function findActive(int $id, bool $exception = true): mixed
     {
-        return Cluster::query()->where('id', $id)->where('active', 1)->first();
+        $cluster = Cluster::query()->where('id', $id)->where('active', 1)->first();
+        if (!$cluster && $exception) {
+            throw new ApiException("City id:$id not found", 0, 404);
+        }
+        return $cluster;
     }
 
     /**
@@ -52,9 +63,8 @@ class ClusterORM implements iUrbanORM
         $cluster->active = $template->active ?? $cluster->active;
 
         $cluster->save();
+
         return $cluster;
-
-
     }
 
 

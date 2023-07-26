@@ -2,9 +2,13 @@
 
 namespace App\Http\ORM\Urban;
 
+use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\iUrbanORM;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Collection;
+use phpDocumentor\Reflection\File;
+use phpDocumentor\Reflection\Types\Self_;
+use Spatie\FlareClient\Api;
 
 class CityORM implements iUrbanORM
 {
@@ -24,9 +28,18 @@ class CityORM implements iUrbanORM
         return City::find($id);
     }
 
-    static function findActive(int $id)
+    /**
+     * @param int $id
+     * @return null|City
+     */
+    static function findActive(int $id, bool $exception = true): mixed
     {
-        return City::query()->where('id', $id)->where('active', 1)->first();
+        $city = City::query()->where('id', $id)->where('active', 1)->first();
+        if (!$city && $exception) {
+            throw new ApiException("City id:$id not found", 0, 404);
+        }
+
+        return $city;
     }
 
     /**
@@ -38,7 +51,7 @@ class CityORM implements iUrbanORM
         $templateId = $template
             ? $template->id
             : null;
-        if (!$templateId)
+        if (!$template)
             return false;
         $city = $templateId
             ? self::find($template->id) ?? new City()
@@ -51,6 +64,7 @@ class CityORM implements iUrbanORM
         $city->latitude = $template->latitude ?? $city->latitude;
         $city->longitude = $template->longitude ?? $city->longitude;
         $city->location = $template->location ?? $city->location;
+        $city->image_main_path = $template->image_main_path ?? $city->image_main_path;
         $city->active = $template->active ?? $city->active ?? true;
         $city->save();
 
@@ -59,9 +73,26 @@ class CityORM implements iUrbanORM
         // добавить сохранение файлов в директорию public/storage/images/cities/alias/img.jpj
     }
 
-    static function saveImages(mixed $templete)
+    /**
+     * @param City $templete
+     * @param File $image
+     * @return City|null
+     */
+    static function saveImages(mixed $templete, mixed $image): City|null
     {
+        if (!$image) {
+            return null;
+        }
 
+        $alias = $templete->alias;
+
+        if ($image->isValid()) {
+            $filename = $image->getClientOriginalName();
+            $path = $image->storeAs("images/cities/$alias", $filename, 'public');
+        }
+        $templete->image_main_path = $path ?? null;
+
+        return self::save($templete);
     }
 
     static function delete(int $id): void

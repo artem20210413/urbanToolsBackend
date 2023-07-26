@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Urban\CityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,5 +26,14 @@ Route::prefix('v1')->group(function () {
 //        Route::post('/registration', [AuthController::class, 'registration']); //TODO uncomment
         Route::post('/images/save', [\App\Http\Controllers\TestController::class, 'storeImage']);
     });
+
+
+    //TODO only upon registration
+
+    Route::post('/city', [CityController::class, 'save']);
+    Route::get('/city', [CityController::class, 'all']);
+    Route::get('/city/{cityId}/show', [CityController::class, 'show']);
+    Route::post('/city/{cityId}/deactivate',[]);
+    Route::post('/city/{cityId}/activate', []);
 
 });
