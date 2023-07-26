@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiException;
+use App\Http\ORM\Urban\CityORM;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Models\City;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +18,9 @@ class AuthController extends Controller
 
         try {
             $credentials = $request->only('login', 'password');
-            $token = $service->login(...$credentials);
+            $user = $service->login(...$credentials);
 
-            return success(['token' => $token]);
+            return success($user->toPlainArray());
         } catch (ApiException $e) {
 
             return error($e);

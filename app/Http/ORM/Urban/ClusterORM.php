@@ -4,43 +4,52 @@ namespace App\Http\ORM\Urban;
 
 use App\Http\ORM\iORM;
 use App\Http\ORM\iUrbanORM;
+use App\Models\City;
 use App\Models\Cluster;
 use Illuminate\Database\Eloquent\Collection;
 
 class ClusterORM implements iUrbanORM
 {
 
-    public function all(): Collection
+    static function all(): Collection
     {
         return Cluster::all();
     }
 
-    public function allActive(): Collection
+    static function allActive(): Collection
     {
         return Cluster::query()->where('active', 1)->get();
     }
 
-    public function find(int $id): Cluster
+    static function find(int $id): Cluster
     {
         return Cluster::find($id);
     }
 
-    public function findActive(int $id)
+    static function findActive(int $id)
     {
         return Cluster::query()->where('id', $id)->where('active', 1)->first();
     }
 
     /**
      * @param Cluster $template
-     * @return void
+     * @return Cluster|bool
      */
-    public function save(mixed $template): Cluster
+    static function save(mixed $template): mixed
     {
-        $cluster = new Cluster();
-        $cluster->id = $template->id ?? $cluster->id ?? null;
-        $cluster->name = $template->name ?? $cluster->name ?? null;
-        $cluster->description = $template->description ?? $cluster->description ?? null;
-        $cluster->active = $template->active ?? $cluster->active ?? null;
+        $templateId = $template
+            ? $template->id
+            : null;
+        if (!$templateId)
+            return false;
+        $cluster = $templateId
+            ? self::find($template->id) ?? new City()
+            : new City();
+
+        $cluster->id = $template->id ?? $cluster->id;
+        $cluster->name = $template->name ?? $cluster->name;
+        $cluster->description = $template->description ?? $cluster->description;
+        $cluster->active = $template->active ?? $cluster->active;
 
         $cluster->save();
         return $cluster;
@@ -49,26 +58,26 @@ class ClusterORM implements iUrbanORM
     }
 
 
-    public function delete(int $id): void
+    static function delete(int $id): void
     {
-        $cluster = $this->find($id);
+        $cluster = self::find($id);
         $cluster->delete();
     }
 
-    public function deactivate(int $id): Cluster
+    static function deactivate(int $id): Cluster|bool
     {
-        $cluster = $this->find($id);
+        $cluster = self::find($id);
         $cluster->active = 1;
 
-        return $this->save($cluster);
+        return self::save($cluster);
     }
 
-    public function activate(int $id): Cluster
+    static function activate(int $id): Cluster|bool
     {
-        $cluster = $this->find($id);
+        $cluster = self::find($id);
         $cluster->active = 0;
 
-        return $this->save($cluster);
+        return self::save($cluster);
     }
 
 }

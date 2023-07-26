@@ -29,6 +29,10 @@ class Cases extends Model
 {
     use HasFactory;
 
+    public function aliasGeneration()
+    {
+        $this->alias = aliasGeneration($this->name);
+    }
     public function cluster(): BelongsTo
     {
         return $this->belongsTo(Cluster::class);

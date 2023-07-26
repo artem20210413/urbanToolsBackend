@@ -18,10 +18,11 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/logout', [AuthController::class, 'logout']);
 
+    Route::post('/registration', [AuthController::class, 'registration']);//TODO delete
 
     Route::middleware('api.auth')->group(function () {
 
-        Route::post('/registration', [AuthController::class, 'registration']);
+//        Route::post('/registration', [AuthController::class, 'registration']); //TODO uncomment
         Route::post('/images/save', [\App\Http\Controllers\TestController::class, 'storeImage']);
     });
 

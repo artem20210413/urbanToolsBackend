@@ -30,7 +30,7 @@ class User extends Model
     protected $fillable = [
         'name',
         'login',
-        'password',
+//        'password',
     ];
 
     /**
@@ -39,7 +39,7 @@ class User extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-//        'password',
+        'password',
     ];
 
     /**

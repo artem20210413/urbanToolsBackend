@@ -9,45 +9,88 @@ use Illuminate\Database\Eloquent\Collection;
 class CityORM implements iUrbanORM
 {
 
-    public function all(): Collection
+    static function all(): Collection
     {
         return City::all();
     }
 
-    public function allActive(): Collection
+    static function allActive(): Collection
     {
         return City::query()->where('active', 1)->get();
     }
 
-    public function find(int $id): ?City
+    static function find(int $id): ?City
     {
         return City::find($id);
     }
 
-    public function findActive(int $id)
+    static function findActive(int $id)
     {
         return City::query()->where('id', $id)->where('active', 1)->first();
     }
 
-    public function save(mixed $template): mixed
+    /**
+     * @param City $template
+     * @return City|bool
+     */
+    static function save(mixed $template): City|bool
     {
-        // TODO: Implement save() method.
+        $templateId = $template
+            ? $template->id
+            : null;
+        if (!$templateId)
+            return false;
+        $city = $templateId
+            ? self::find($template->id) ?? new City()
+            : new City();
+
+        $city->id = $template->id ?? $city->id;
+        $city->name = $template->name ?? $city->name;
+            $city->id ?? $city->aliasGeneration();
+        $city->description = $template->description ?? $city->description;
+        $city->latitude = $template->latitude ?? $city->latitude;
+        $city->longitude = $template->longitude ?? $city->longitude;
+        $city->location = $template->location ?? $city->location;
+        $city->active = $template->active ?? $city->active ?? true;
+        $city->save();
+
+        return $city;
+        //формировать алиас с названия
         // добавить сохранение файлов в директорию public/storage/images/cities/alias/img.jpj
     }
 
-    public function delete(int $id): void
+    static function saveImages(mixed $templete)
     {
-        // TODO: Implement delete() method.
+
     }
 
-    public function deactivate(int $id): mixed
+    static function delete(int $id): void
     {
-        // TODO: Implement deactivate() method.
+        self::find($id)->delete();
     }
 
-    public function activate(int $id): mixed
+    /**
+     * @param int $id
+     * @return City
+     */
+    static function deactivate(int $id): City|bool
     {
-        // TODO: Implement activate() method.
+        $city = self::find($id);
+        $city->active = false;
+
+        return self::save($city);
+    }
+
+    /**
+     * @param int $id
+     * @return City
+     */
+    static function activate(int $id): City|bool
+    {
+        $city = self::find($id);
+        $city->active = true;
+
+        return self::save($city);
     }
 
 }

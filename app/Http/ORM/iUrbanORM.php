@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 interface iUrbanORM extends iORM
 {
-    public function allActive(): Collection;
+    static function allActive(): Collection;
 
-    public function findActive(int $id);
+    static function findActive(int $id);
 
-    public function deactivate(int $id): mixed;
+    static function deactivate(int $id): mixed;
 
-    public function activate(int $id): mixed;
+    static function activate(int $id): mixed;
 }

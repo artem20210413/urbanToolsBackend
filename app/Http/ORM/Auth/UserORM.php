@@ -10,11 +10,8 @@ use Illuminate\Database\Schema\Blueprint;
 
 class UserORM implements iORM
 {
-    public function __construct()
-    {
-    }
 
-    public function isValidUser(string $login, string $password): User
+    static function isValidUser(string $login, string $password): User
     {
 
         $user = User::query()->where('login', $login)->first();
@@ -33,23 +30,23 @@ class UserORM implements iORM
         throw new ApiException('Login or password is not correct', 0, 422);
     }
 
-    public function passwordHashing(string $password): string
+    static function passwordHashing(string $password): string
     {
         return bcrypt($password);
     }
 
 
-    public function all(): Collection
+    static function all(): Collection
     {
         return User::all();
     }
 
-    public function find(int $id): ?User
+    static function find(int $id): ?User
     {
         return User::find($id);
     }
 
-    public function findActive(int $id): ?User
+    static function findActive(int $id): ?User
     {
         $user = User::find($id);
 
@@ -60,10 +57,10 @@ class UserORM implements iORM
      * @param User $template
      * @return User
      */
-    public function saveUser(User $template, string $password = null): User
+    static function saveUser(User $template, string $password = null): User
     {
         $user = $template->id
-            ? $this->findActive($template->id)
+            ? self::findActive($template->id)
             : new User();
 
         $user->name = $template->name ?? $user->name;
@@ -77,32 +74,32 @@ class UserORM implements iORM
         return $user;
     }
 
-    public function delete(int $id): void
+    static function delete(int $id): void
     {
-        $user = $this->findActive($id);
+        $user = self::findActive($id);
         $user->delete();
     }
 
-    public function deactivate(int $id): mixed
+    static function deactivate(int $id): mixed
     {
-        $user = $this->find($id);
+        $user = self::find($id);
         $user->active = false;
 
-        return $this->save($user);
+        return self::save($user);
     }
 
-    public function activate(int $id): mixed
+    static function activate(int $id): mixed
     {
-        $user = $this->find($id);
+        $user = self::find($id);
         $user->active = true;
 
-        return $this->save($user);
+        return self::save($user);
     }
 
-    public function save(mixed $template): mixed
+    static function save(mixed $template): mixed
     {
         $user = $template->id
-            ? $this->findActive($template->id)
+            ? self::findActive($template->id)
             : new User();
 
         $user->name = $template->name ?? $user->name;

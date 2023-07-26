@@ -23,4 +23,12 @@ use Illuminate\Support\Carbon;
 class City extends Model
 {
     use HasFactory;
+
+
+    public function aliasGeneration()
+    {
+        $this->alias = aliasGeneration($this->name);
+    }
 }
+
+

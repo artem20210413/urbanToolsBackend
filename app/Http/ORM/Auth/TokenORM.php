@@ -12,22 +12,22 @@ use Illuminate\Support\Facades\Session;
 class TokenORM implements iORM
 {
 
-    public function all(): Collection
+    static function all(): Collection
     {
         return UserToken::all();
     }
 
-    public function find(int $id): ?UserToken
+    static function find(int $id): ?UserToken
     {
         return UserToken::find($id);
     }
 
-    public function findActive(int $id)
+    static function findActive(int $id)
     {
         return UserToken::query()->where('id', $id)->where('active', 1)->first();
     }
 
-    public function search(string $token)//: ?UserToken
+    static function search(string $token)//: ?UserToken
     {
         return UserToken::query()->where('token', $token)->where('active', 1)->first();
     }
@@ -37,7 +37,7 @@ class TokenORM implements iORM
      * @return UserToken|null
      */
 
-    public function save(mixed $template): ?UserToken
+    static function save(mixed $template): ?UserToken
     {
         if (!$template->user_id) {
             return null;
@@ -53,24 +53,24 @@ class TokenORM implements iORM
 
     }
 
-    public function delete(int $id): void
+    static function delete(int $id): void
     {
-        $this->find($id)->delete();
+        self::find($id)->delete();
     }
 
-    public function deactivate(int $id): mixed
+    static function deactivate(int $id): mixed
     {
-        $token = $this->find($id);
+        $token = self::find($id);
         $token->active = false;
 
-        return $this->save($token);
+        return self::save($token);
     }
 
-    public function activate(int $id): mixed
+    static function activate(int $id): mixed
     {
-        $token = $this->find($id);
+        $token = self::find($id);
         $token->active = true;
 
-        return $this->save($token);
+        return self::save($token);
     }
 }
