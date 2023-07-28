@@ -2,6 +2,7 @@
 
 namespace App\Services\Urban;
 
+use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\Urban\CityORM;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,9 +33,24 @@ class CityService
         $city->location = $request->location;
         $city = CityORM::save($city);
 //        dd($city);
-        $city = CityORM::saveImages($city, $image)??$city;
+        $city = CityORM::saveImages($city, $image) ?? $city;
 
         return $city;
+    }
+
+    public function active(int $cityId, string $active): City|bool
+    {
+        $act = 'act';
+        $dec = 'dec';
+        switch ($active) {
+            case $dec:
+                return CityORM::deactivate($cityId);
+            case $act:
+                return CityORM::activate($cityId);
+
+            default:
+                throw new ApiException('Action is not available: $active', 0, 422);
+        }
     }
 
 }

@@ -33,7 +33,6 @@ Route::prefix('v1')->group(function () {
     Route::post('/city', [CityController::class, 'save']);
     Route::get('/city', [CityController::class, 'all']);
     Route::get('/city/{cityId}/show', [CityController::class, 'show']);
-    Route::post('/city/{cityId}/deactivate',[]);
-    Route::post('/city/{cityId}/activate', []);
+    Route::post('/city/{cityId}/active/{active}', [CityController::class, 'active']);
 
 });

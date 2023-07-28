@@ -25,6 +25,7 @@ class CityResource extends MainResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'location' => $this->location,
+            'active' => (bool)$this->active,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d H:i:s'),
             'image_main_path' => $this->image_main_path ? asset('storage/' . $this->image_main_path) : null,
