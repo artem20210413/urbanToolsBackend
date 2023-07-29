@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Urban\CaseController;
 use App\Http\Controllers\Urban\CityController;
 use App\Http\Controllers\Urban\ClusterController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,13 @@ Route::prefix('v1')->group(function () {
     Route::get('/cluster', [ClusterController::class, 'all']);
     Route::get('/cluster/{clusterId}/show', [ClusterController::class, 'show']);
     Route::post('/cluster/{clusterId}/active/{active}', [ClusterController::class, 'active']);
+
+
+    //TODO only upon registration
+    Route::post('/case', [CaseController::class, 'save']);
+    Route::get('/case', [CaseController::class, 'all']);
+    Route::get('/case/{caseId}/show', [CaseController::class, 'show']);
+    Route::post('/case/{caseId}/active/{active}', [CaseController::class, 'active']);
 
 
 });

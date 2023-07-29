@@ -73,8 +73,6 @@ class CityORM implements iUrbanORM
         $city->save();
 
         return $city;
-        //формировать алиас с названия
-        // добавить сохранение файлов в директорию public/storage/images/cities/alias/img.jpj
     }
 
     /**

@@ -4,23 +4,22 @@ namespace App\Http\Controllers\Urban;
 
 use App\Http\Controllers\Api\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CaseResource;
 use App\Http\Resources\ClusterResource;
+use App\Models\Cases;
+use App\Services\Urban\CaseService;
 use App\Services\Urban\CityService;
 use App\Services\Urban\ClusterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ClusterController extends Controller
+class CaseController extends Controller
 {
-    /**
-     * @param ClusterService $service
-     * @return JsonResponse
-     */
-    public function all(ClusterService $service): JsonResponse
+    public function all(CaseService $service): JsonResponse
     {
         try {
             $clusters = $service->all();
-            $res = ClusterResource::collection($clusters);
+            $res = CaseResource::collection($clusters);
 
             return success($res);
         } catch (ApiException $e) {
@@ -28,32 +27,23 @@ class ClusterController extends Controller
         }
     }
 
-    /**
-     * @param int $clusterId
-     * @param ClusterService $service
-     * @return JsonResponse
-     */
-    public function show(int $clusterId, ClusterService $service): JsonResponse
+    public function show(int $clusterId, CaseService $service): JsonResponse
     {
         try {
             $cluster = $service->show($clusterId);
-            $res = new ClusterResource($cluster);
+            $res = new CaseResource($cluster);
+
             return success($res);
         } catch (ApiException $e) {
             return error($e);
         }
     }
 
-    /**
-     * @param Request $request
-     * @param ClusterService $service
-     * @return JsonResponse
-     */
-    public function save(Request $request, ClusterService $service): JsonResponse
+    public function save(Request $request, CaseService $service): JsonResponse
     {//TODO Add valid Request
         try {
             $cluster = $service->save($request);
-            $res = new ClusterResource($cluster);
+            $res = new CaseResource($cluster);
 
             return success($res);
         } catch (ApiException $e) {
@@ -62,17 +52,12 @@ class ClusterController extends Controller
         }
     }
 
-    /**
-     * @param int $clusterId
-     * @param string $active
-     * @param ClusterService $service
-     * @return JsonResponse
-     */
-    public function active(int $clusterId, string $active, ClusterService $service): JsonResponse
+
+    public function active(int $clusterId, string $active, CaseService $service): JsonResponse
     {
         try {
             $cluster = $service->active($clusterId, $active);
-            $res = new ClusterResource($cluster);
+            $res = new CaseResource($cluster);
 
             return success($res);
         } catch (ApiException $e) {
