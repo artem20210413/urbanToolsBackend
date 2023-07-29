@@ -2,11 +2,9 @@
 
 namespace App\Http\ORM\Auth;
 
-use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\iORM;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Schema\Blueprint;
 
 class UserORM implements iORM
 {
@@ -17,17 +15,17 @@ class UserORM implements iORM
         $user = User::query()->where('login', $login)->first();
 
         if (!$user) {
-            throw new ApiException('Login or password is not correct', 0, 422);
+            \App\Helpers\ExceptionHelper::loginOrPasswordIsNotCorrect();
         }
 
         if (!$user->active) {
-            throw new ApiException('User not active', 0, 422);
+            \App\Helpers\ExceptionHelper::userNotActive();
         }
 
         if (password_verify($password, $user->password)) {
             return $user;
         }
-        throw new ApiException('Login or password is not correct', 0, 422);
+        \App\Helpers\ExceptionHelper::loginOrPasswordIsNotCorrect();
     }
 
     static function passwordHashing(string $password): string

@@ -2,13 +2,11 @@
 
 namespace App\Http\ORM\Urban;
 
-use App\Http\Controllers\Api\ApiException;
+use App\Helpers\ExceptionHelper;
 use App\Http\ORM\iUrbanORM;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Collection;
 use phpDocumentor\Reflection\File;
-use phpDocumentor\Reflection\Types\Self_;
-use Spatie\FlareClient\Api;
 
 class CityORM implements iUrbanORM
 {
@@ -23,9 +21,15 @@ class CityORM implements iUrbanORM
         return City::query()->where('active', 1)->get();
     }
 
-    static function find(int $id): ?City
+    static function find(int $id, bool $exception = true): ?City
     {
-        return City::find($id);
+        $city = City::find($id);
+
+        if (!$city && $exception) {
+            ExceptionHelper::objectNotFound($id, 'City');
+        }
+
+        return $city;
     }
 
     /**
@@ -36,7 +40,7 @@ class CityORM implements iUrbanORM
     {
         $city = City::query()->where('id', $id)->where('active', 1)->first();
         if (!$city && $exception) {
-            throw new ApiException("City id:$id not found", 0, 404);
+            ExceptionHelper::objectNotFound($id, 'City');
         }
 
         return $city;
@@ -54,7 +58,7 @@ class CityORM implements iUrbanORM
         if (!$template)
             return false;
         $city = $templateId
-            ? self::find($template->id) ?? new City()
+            ? self::find($template->id, false) ?? new City()
             : new City();
 
         $city->id = $template->id ?? $city->id;

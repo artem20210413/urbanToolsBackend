@@ -2,8 +2,8 @@
 
 namespace App\Http\ORM\Urban;
 
+use App\Helpers\ExceptionHelper;
 use App\Http\Controllers\Api\ApiException;
-use App\Http\ORM\iORM;
 use App\Http\ORM\iUrbanORM;
 use App\Models\City;
 use App\Models\Cluster;
@@ -22,9 +22,15 @@ class ClusterORM implements iUrbanORM
         return Cluster::query()->where('active', 1)->get();
     }
 
-    static function find(int $id): Cluster
+    static function find(int $id, bool $exception = true): ?Cluster
     {
-        return Cluster::find($id);
+        $cluster = Cluster::find($id);;
+
+        if (!$cluster && $exception) {
+            ExceptionHelper::objectNotFound($id, 'Cluster');
+        }
+
+        return $cluster;
     }
 
     /**
@@ -33,12 +39,14 @@ class ClusterORM implements iUrbanORM
      * @return Cluster
      * @throws ApiException
      */
-    static function findActive(int $id, bool $exception = true): mixed
+    static function findActive(int $id, bool $exception = true): object
     {
         $cluster = Cluster::query()->where('id', $id)->where('active', 1)->first();
+
         if (!$cluster && $exception) {
-            throw new ApiException("City id:$id not found", 0, 404);
+            ExceptionHelper::objectNotFound($id, 'Cluster');
         }
+
         return $cluster;
     }
 
@@ -46,21 +54,21 @@ class ClusterORM implements iUrbanORM
      * @param Cluster $template
      * @return Cluster|bool
      */
-    static function save(mixed $template): mixed
+    static function save(mixed $template): Cluster|bool
     {
+
         $templateId = $template
             ? $template->id
             : null;
-        if (!$templateId)
-            return false;
+
         $cluster = $templateId
-            ? self::find($template->id) ?? new City()
-            : new City();
+            ? self::find($template->id, false) ?? new Cluster()
+            : new Cluster();
 
         $cluster->id = $template->id ?? $cluster->id;
         $cluster->name = $template->name ?? $cluster->name;
         $cluster->description = $template->description ?? $cluster->description;
-        $cluster->active = $template->active ?? $cluster->active;
+        $cluster->active = $template->active ?? $cluster->active ?? true;
 
         $cluster->save();
 
@@ -77,7 +85,7 @@ class ClusterORM implements iUrbanORM
     static function deactivate(int $id): Cluster|bool
     {
         $cluster = self::find($id);
-        $cluster->active = 1;
+        $cluster->active = false;
 
         return self::save($cluster);
     }
@@ -85,7 +93,7 @@ class ClusterORM implements iUrbanORM
     static function activate(int $id): Cluster|bool
     {
         $cluster = self::find($id);
-        $cluster->active = 0;
+        $cluster->active = true;
 
         return self::save($cluster);
     }

@@ -4,19 +4,23 @@ namespace App\Http\Controllers\Urban;
 
 use App\Http\Controllers\Api\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CityResource;
+use App\Http\Resources\ClusterResource;
 use App\Services\Urban\CityService;
+use App\Services\Urban\ClusterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class ClusterController extends Controller
 {
-
-    public function all(CityService $service): JsonResponse
+    /**
+     * @param ClusterService $service
+     * @return JsonResponse
+     */
+    public function all(ClusterService $service): JsonResponse
     {
         try {
-            $cities = $service->all();
-            $res = CityResource::collection($cities);
+            $clusters = $service->all();
+            $res = ClusterResource::collection($clusters);
 
             return success($res);
         } catch (ApiException $e) {
@@ -24,23 +28,22 @@ class CityController extends Controller
         }
     }
 
-    public function show(int $cityId, CityService $service): JsonResponse
+    public function show(int $clusterId, ClusterService $service): JsonResponse
     {
         try {
-            $city = $service->show($cityId);
-            $res = new CityResource($city);
-
+            $cluster = $service->show($clusterId);
+            $res = new ClusterResource($cluster);
             return success($res);
         } catch (ApiException $e) {
             return error($e);
         }
     }
 
-    public function save(Request $request, CityService $service): JsonResponse
+    public function save(Request $request, ClusterService $service): JsonResponse
     {//TODO Add valid Request
         try {
-            $city = $service->save($request);
-            $res = new CityResource($city);
+            $cluster = $service->save($request);
+            $res = new ClusterResource($cluster);
 
             return success($res);
         } catch (ApiException $e) {
@@ -55,11 +58,11 @@ class CityController extends Controller
      * @param CityService $cityService
      * @return JsonResponse
      */
-    public function active(int $cityId, string $active, CityService $service): JsonResponse
+    public function active(int $clusterId, string $active, ClusterService $service): JsonResponse
     {
         try {
-            $city = $service->active($cityId, $active);
-            $res = new CityResource($city);
+            $cluster = $service->active($clusterId, $active);
+            $res = new ClusterResource($cluster);
 
             return success($res);
         } catch (ApiException $e) {
@@ -67,5 +70,4 @@ class CityController extends Controller
             return error($e);
         }
     }
-
 }

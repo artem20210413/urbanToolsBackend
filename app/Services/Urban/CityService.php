@@ -8,7 +8,7 @@ use App\Models\City;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
-class CityService
+class CityService implements UrbanService
 {
 
     public function all(): Collection
@@ -26,6 +26,7 @@ class CityService
 //        dd($request->all());
         $image = $request->image;
         $city = new City();
+        $city->id = $request->id;
         $city->name = $request->name;
         $city->description = $request->description;
         $city->latitude = $request->latitude;
@@ -38,15 +39,15 @@ class CityService
         return $city;
     }
 
-    public function active(int $cityId, string $active): City|bool
+    public function active(int $id, string $active): City|bool
     {
         $act = 'act';
         $dec = 'dec';
         switch ($active) {
             case $dec:
-                return CityORM::deactivate($cityId);
+                return CityORM::deactivate($id);
             case $act:
-                return CityORM::activate($cityId);
+                return CityORM::activate($id);
 
             default:
                 throw new ApiException('Action is not available: $active', 0, 422);

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class CityResource extends MainResource
+class ClusterResource extends MainResource
 {
     public function __construct($resource)
     {
@@ -13,9 +13,8 @@ class CityResource extends MainResource
     }
 
     /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
+     * @param Request $request
+     * @return array
      */
     public function toArray(Request $request): array
     {
@@ -23,13 +22,9 @@ class CityResource extends MainResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'location' => $this->location,
             'active' => (bool)$this->active,
             'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d H:i:s'),
-            'image_main_path' => $this->image_main_path ? asset('storage/' . $this->image_main_path) : null,
         ];
     }
 }
