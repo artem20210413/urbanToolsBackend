@@ -20,7 +20,7 @@ class AuthController extends Controller
             $credentials = $request->only('login', 'password');
             $user = $service->login(...$credentials);
 
-            return success($user->toPlainArray());
+            return success($user);
         } catch (ApiException $e) {
 
             return error($e);
