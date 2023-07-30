@@ -52,24 +52,24 @@ class CityORM implements iUrbanORM
      */
     static function save(mixed $template): City|bool
     {
-        $templateId = $template
-            ? $template->id
-            : null;
-        if (!$template)
-            return false;
-        $city = $templateId
-            ? self::find($template->id, false) ?? new City()
+//        $templateId = $template
+//            ? $template->id
+//            : null;
+
+        $city = $template->id
+            ? ($new = self::find($template->id, false)) ?? new City()
             : new City();
 
         $city->id = $template->id ?? $city->id;
         $city->name = $template->name ?? $city->name;
-            $city->id ?? $city->aliasGeneration();
+            $new ?? $city->aliasGeneration();
         $city->description = $template->description ?? $city->description;
-        $city->latitude = $template->latitude ?? $city->latitude;
-        $city->longitude = $template->longitude ?? $city->longitude;
+        $city->latitude = (double)$template->latitude ?? $city->latitude;
+        $city->longitude = (double)$template->longitude ?? $city->longitude;
         $city->location = $template->location ?? $city->location;
         $city->image_main_path = $template->image_main_path ?? $city->image_main_path;
         $city->active = $template->active ?? $city->active ?? true;
+        
         $city->save();
 
         return $city;

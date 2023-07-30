@@ -26,14 +26,24 @@ class CaseService implements UrbanService
 
     public function save(Request $request): Cases
     {
-//        $cluster = new Cluster();
-//        $cluster->id = $request->id;
-//        $cluster->name = $request->name;
-//        $cluster->description = $request->description;
-//
-//        $cluster = CaseORM::save($cluster);
-//
-//        return $cluster;
+
+        $imgMain = $request->imgMain;
+        $img = $request->img;
+
+        $case = new Cases();
+        $case->id = $request->id;
+        $case->name = $request->name;
+        $case->description = $request->description;
+        $case->cluster_id = $request->cluster_id;
+        $case->city_id = $request->city_id;
+        $case->latitude = $request->latitude;
+        $case->longitude = $request->longitude;
+        $case->location = $request->location;
+        $case = CaseORM::save($case);
+        CaseORM::saveMainImages($case, $imgMain);
+        CaseORM::saveSecondImages($case, $img);
+
+        return $case;
     }
 
     public function active(int $id, string $active): Cases|bool

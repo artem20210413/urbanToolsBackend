@@ -55,25 +55,78 @@ class CaseORM implements iUrbanORM
      * @param Cluster $template
      * @return Cluster|bool
      */
-    static function save(mixed $template): Cases|bool
+    static function save(mixed $template): Cases
     {
 
 //        $templateId = $template
 //            ? $template->id
 //            : null;
-//
-//        $cluster = $templateId
-//            ? self::find($template->id, false) ?? new Cluster()
-//            : new Cluster();
-//
-//        $cluster->id = $template->id ?? $cluster->id;
-//        $cluster->name = $template->name ?? $cluster->name;
-//        $cluster->description = $template->description ?? $cluster->description;
-//        $cluster->active = $template->active ?? $cluster->active ?? true;
-//
-//        $cluster->save();
-//
-//        return $cluster;
+
+        $case = isset($template->id)
+            ? ($new = self::find($template->id, false)) ?? new Cases()
+            : new Cases();
+
+
+        $case->id = $template->id ?? $case->id;
+        $case->name = $template->name ?? $case->name;
+        $case->description = $template->description ?? $case->description;
+        $case->cluster_id = $template->cluster_id ?? $case->cluster_id;
+        $case->city_id = $template->city_id ?? $case->city_id;
+        $case->latitude = (double)$template->latitude ?? $case->latitude;
+        $case->longitude = (double)$template->longitude ?? $case->longitude;
+        $case->location = $template->location ?? $case->location;
+        $case->image_main_path = $template->image_main_path ?? $case->image_main_path;
+        $case->active = $template->active ?? $case->active ?? true;
+
+//dd($new, $case->toArray());
+        if (!$new) {
+            $case->aliasGeneration();
+            CityORM::find($case->city_id);
+            ClusterORM::find($case->cluster_id);
+        }
+
+        $case->save();
+
+        return $case;
+    }
+
+    static function saveMainImages(Cases $templete, mixed $image): Cases|null
+    {
+        if (!$image) {
+            return null;
+        }
+
+        $alias = $templete->alias;
+
+        if ($image->isValid()) {
+            $filename = $image->getClientOriginalName();
+            $path = $image->storeAs("images/cases/$alias/first", $filename, 'public');
+        }
+
+        $templete->image_main_path = $path ?? null;
+
+        return self::save($templete);
+    }
+
+    static function saveSecondImages(Cases $templete, ?array $images): Cases|null
+    {
+        if (!$images) {
+            return null;
+        }
+
+        $alias = $templete->alias;
+
+        $templete->dropSecondImg();
+
+        foreach ($images as $image) {
+            if ($image->isValid()) {
+                $filename = $image->getClientOriginalName();
+                $path = $image->storeAs("images/cases/$alias/second", $filename, 'public');
+                $templete->saveSecondImg($path);
+            }
+        }
+
+        return self::save($templete);
     }
 
 

@@ -34,6 +34,7 @@ class Cases extends Model
     {
         $this->alias = aliasGeneration($this->name);
     }
+
     public function cluster(): BelongsTo
     {
         return $this->belongsTo(Cluster::class);
@@ -46,6 +47,24 @@ class Cases extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(CaseImage::class);
+        return $this->hasMany(CaseImage::class, 'case_id' , 'id');
+    }
+
+    public function saveSecondImg(string $path): CaseImage
+    {
+        $img = new CaseImage();
+        $img->case_id = $this->id;
+        $img->image_paths = $path;
+        $img->save();
+
+        return $img;
+    }
+
+    public function dropSecondImg(): void
+    {
+        $images = CaseImage::query()->where('case_id', $this->id)->get();
+        foreach ($images as $image) {
+            $image->delete();
+        }
     }
 }

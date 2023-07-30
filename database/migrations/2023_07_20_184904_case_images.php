@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('case_id');
             $table->string('image_paths', 256);
-            $table->string('description', 256);
+            $table->string('description', 256)->nullable();
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
 

@@ -42,8 +42,8 @@ class CaseController extends Controller
     public function save(Request $request, CaseService $service): JsonResponse
     {//TODO Add valid Request
         try {
-            $cluster = $service->save($request);
-            $res = new CaseResource($cluster);
+            $case = $service->save($request);
+            $res = new CaseResource($case);
 
             return success($res);
         } catch (ApiException $e) {

@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->string('name', 256);
             $table->string('alias', 256);
             $table->text('description');
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
+            $table->decimal('latitude', 18, 16);
+            $table->decimal('longitude', 18, 16);
             $table->string('location', 256);
             $table->string('image_main_path', 256)->nullable();
             $table->tinyInteger('active')->default(1);
