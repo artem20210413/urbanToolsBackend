@@ -40,6 +40,29 @@ class CaseController extends Controller
         }
     }
 
+    public function listByCity(int $cityId, CaseService $service): JsonResponse
+    {
+        try {
+            $clusters = $service->listByCity($cityId);
+            $res = CaseResource::collection($clusters);
+
+            return success($res);
+        } catch (ApiException $e) {
+            return error($e);
+        }
+    }
+    public function listByCluster(int $clusterId, CaseService $service): JsonResponse
+    {
+        try {
+            $clusters = $service->listByCluster($clusterId);
+            $res = CaseResource::collection($clusters);
+
+            return success($res);
+        } catch (ApiException $e) {
+            return error($e);
+        }
+    }
+
     public function save(CaseRequest $request, CaseService $service): JsonResponse
     {
         try {

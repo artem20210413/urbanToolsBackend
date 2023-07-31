@@ -58,10 +58,6 @@ class CaseORM implements iUrbanORM
     static function save(mixed $template): Cases
     {
 
-//        $templateId = $template
-//            ? $template->id
-//            : null;
-
         $case = isset($template->id)
             ? ($new = self::find($template->id, false)) ?? new Cases()
             : new Cases();
@@ -78,8 +74,7 @@ class CaseORM implements iUrbanORM
         $case->image_main_path = $template->image_main_path ?? $case->image_main_path;
         $case->active = $template->active ?? $case->active ?? true;
 
-//dd($new, $case->toArray());
-        if (!$new) {
+        if (!isset($new)) {
             $case->aliasGeneration();
             CityORM::find($case->city_id);
             ClusterORM::find($case->cluster_id);
@@ -150,6 +145,16 @@ class CaseORM implements iUrbanORM
         $cluster->active = true;
 
         return self::save($cluster);
+    }
+
+    public static function listByCity(int $cityId): object
+    {
+        return Cases::query()->where('city_id', $cityId)->get();
+    }
+
+    public static function listByCluster(int $clusterId): object
+    {
+        return Cases::query()->where('cluster_id', $clusterId)->get();
     }
 
 }

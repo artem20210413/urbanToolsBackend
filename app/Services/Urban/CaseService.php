@@ -35,7 +35,6 @@ class CaseService implements UrbanService
         $imageMain = $request->imageMain;
         $images = $request->images;
 
-//        dd($request->toArray(),$imageMain, $images);
         $case = new Cases();
         $case->id = $request->id;
         $case->name = $request->name;
@@ -62,6 +61,24 @@ class CaseService implements UrbanService
             $act => CaseORM::activate($id),
             default => ExceptionHelper::actionIsNotAvailable($active),
         };
+    }
+
+    /**
+     * @param int $cityId
+     * @return Cases
+     */
+    public function listByCity(int $cityId): object
+    {
+        return CaseORM::listByCity($cityId);
+    }
+
+    /**
+     * @param int $clusterId
+     * @return Cases
+     */
+    public function listByCluster(int $clusterId): object
+    {
+        return CaseORM::listByCluster($clusterId);
     }
 
 }
