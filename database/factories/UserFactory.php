@@ -21,7 +21,6 @@ class UserFactory extends Factory
         return [
             'name' => $name,
             'login' => $name,
-//            'password' => '$2y$10$OG68Xxr.vh/71ImhkYwjv.L5t2JMuSLS1QiT6usCh/.tSjbaqLWnu', // Password123!
             'password' => 'Password123!', // password
         ];
     }

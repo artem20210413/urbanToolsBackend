@@ -5,6 +5,7 @@ namespace App\Services\Urban;
 use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\Urban\CityORM;
 use App\Models\City;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,11 @@ class CityService implements UrbanService
         return CityORM::findActive($id);
     }
 
-    public function save(Request $request): City
+    /**
+     * @param Request $request
+     * @return City
+     */
+    public function save(ValidatesWhenResolved $request): City
     {
 //        dd($request->all());
         $image = $request->image;

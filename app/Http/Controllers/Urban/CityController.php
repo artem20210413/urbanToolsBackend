@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Urban;
 
 use App\Http\Controllers\Api\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CityRequest;
 use App\Http\Resources\CityResource;
 use App\Services\Urban\CityService;
 use Illuminate\Http\JsonResponse;
@@ -36,8 +37,8 @@ class CityController extends Controller
         }
     }
 
-    public function save(Request $request, CityService $service): JsonResponse
-    {//TODO Add valid Request
+    public function save(CityRequest $request, CityService $service): JsonResponse
+    {
         try {
             $city = $service->save($request);
             $res = new CityResource($city);
@@ -51,8 +52,8 @@ class CityController extends Controller
 
     /**
      * @param int $cityId
-     * @param string $active Possible values: 'act' or 'dec'
-     * @param CityService $cityService
+     * @param string $active
+     * @param CityService $service
      * @return JsonResponse
      */
     public function active(int $cityId, string $active, CityService $service): JsonResponse

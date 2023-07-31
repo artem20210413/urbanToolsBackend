@@ -5,7 +5,9 @@ namespace App\Services\Urban;
 use App\Helpers\ExceptionHelper;
 use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\Urban\ClusterORM;
+use App\Http\Requests\ClusterRequest;
 use App\Models\Cluster;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -31,13 +33,12 @@ class ClusterService implements UrbanService
      * @param Request $request
      * @return Cluster
      */
-    public function save(Request $request): Cluster
+    public function save(ValidatesWhenResolved $request): Cluster
     {
         $cluster = new Cluster();
         $cluster->id = $request->id;
         $cluster->name = $request->name;
         $cluster->description = $request->description;
-
         $cluster = ClusterORM::save($cluster);
 
         return $cluster;

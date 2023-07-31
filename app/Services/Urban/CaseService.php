@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\Urban\CaseORM;
 use App\Models\Cases;
 use App\Models\Cluster;
+use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
@@ -24,12 +25,17 @@ class CaseService implements UrbanService
         return CaseORM::findActive($id);
     }
 
-    public function save(Request $request): Cases
+    /**
+     * @param Request $request
+     * @return Cases
+     */
+    public function save(ValidatesWhenResolved $request): Cases
     {
 
-        $imgMain = $request->imgMain;
-        $img = $request->img;
+        $imageMain = $request->imageMain;
+        $images = $request->images;
 
+//        dd($request->toArray(),$imageMain, $images);
         $case = new Cases();
         $case->id = $request->id;
         $case->name = $request->name;
@@ -40,8 +46,9 @@ class CaseService implements UrbanService
         $case->longitude = $request->longitude;
         $case->location = $request->location;
         $case = CaseORM::save($case);
-        CaseORM::saveMainImages($case, $imgMain);
-        CaseORM::saveSecondImages($case, $img);
+
+        CaseORM::saveMainImages($case, $imageMain);
+        CaseORM::saveSecondImages($case, $images);
 
         return $case;
     }

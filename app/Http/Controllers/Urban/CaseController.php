@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Urban;
 
 use App\Http\Controllers\Api\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CaseRequest;
 use App\Http\Resources\CaseResource;
 use App\Http\Resources\ClusterResource;
 use App\Models\Cases;
@@ -39,15 +40,13 @@ class CaseController extends Controller
         }
     }
 
-    public function save(Request $request, CaseService $service): JsonResponse
-    {//TODO Add valid Request
+    public function save(CaseRequest $request, CaseService $service): JsonResponse
+    {
         try {
             $case = $service->save($request);
             $res = new CaseResource($case);
-
             return success($res);
         } catch (ApiException $e) {
-
             return error($e);
         }
     }

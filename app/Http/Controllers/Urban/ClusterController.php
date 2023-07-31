@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Urban;
 
 use App\Http\Controllers\Api\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ClusterRequest;
 use App\Http\Resources\ClusterResource;
 use App\Services\Urban\CityService;
 use App\Services\Urban\ClusterService;
@@ -45,11 +46,11 @@ class ClusterController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ClusterRequest $request
      * @param ClusterService $service
      * @return JsonResponse
      */
-    public function save(Request $request, ClusterService $service): JsonResponse
+    public function save(ClusterRequest $request, ClusterService $service): JsonResponse
     {//TODO Add valid Request
         try {
             $cluster = $service->save($request);
