@@ -44,8 +44,13 @@ Route::prefix('v1')->group(function () {
     Route::get('/cluster/{clusterId}/show', [ClusterController::class, 'show']);
 
     Route::get('/case', [CaseController::class, 'all']);
+    Route::get('/case/search/{search}', [CaseController::class, 'search']);
     Route::get('/case/{caseId}/show', [CaseController::class, 'show']);
     Route::get('/case/city/{cityId}', [CaseController::class, 'listByCity']);
     Route::get('/case/cluster/{clusterId}', [CaseController::class, 'listByCluster']);
+
+
+
+
 
 });

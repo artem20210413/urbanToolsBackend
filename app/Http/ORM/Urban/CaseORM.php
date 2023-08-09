@@ -157,4 +157,28 @@ class CaseORM implements iUrbanORM
         return Cases::query()->where('cluster_id', $clusterId)->get();
     }
 
+    public static function search(string $search)
+    {
+//        $search = str_replace(' ', '%', $search);
+//        return Cases::query()
+//            ->whereRaw("CONCAT_WS(' ', name, alias, description) REGEXP ?", [$search])
+//            ->orWhereHas('city', function ($query) use ($search) {
+//                $query->where('name', 'like', '%' . $search . '%');
+//            })
+//            ->orWhereHas('cluster', function ($query) use ($search) {
+//                $query->where('name', 'like', '%' . $search . '%');
+//            })
+//            ->get();
+        return Cases::query()
+            ->where('name', 'like', '%' . $search . '%')
+            ->orWhereHas('city', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('cluster', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+    }
+
 }

@@ -27,6 +27,17 @@ class CaseController extends Controller
             return error($e);
         }
     }
+    public function search(string $search, CaseService $service): JsonResponse
+    {
+        try {
+            $clusters = $service->search($search);
+            $res = CaseResource::collection($clusters);
+
+            return success($res);
+        } catch (ApiException $e) {
+            return error($e);
+        }
+    }
 
     public function show(int $clusterId, CaseService $service): JsonResponse
     {

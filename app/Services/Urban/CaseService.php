@@ -81,4 +81,9 @@ class CaseService implements UrbanService
         return CaseORM::listByCluster($clusterId);
     }
 
+    public function search(string $search)
+    {
+        return CaseORM::search($search);
+    }
+
 }
