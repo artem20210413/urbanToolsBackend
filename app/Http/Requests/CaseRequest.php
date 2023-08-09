@@ -28,7 +28,7 @@ class CaseRequest extends FormRequest
         return [
             'id' => 'integer',
             'name' => "$request|string|max:256|unique:cases,name" . $id . ',id',
-            'description' => "$request|string|max:1024",
+            'description' => "$request|string|max:50000",
             'cluster_id' => "$request|exists:clusters,id",
             'city_id' => "$request|exists:cities,id",
             'latitude' => "$request|numeric",

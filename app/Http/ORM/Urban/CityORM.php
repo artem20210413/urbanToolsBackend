@@ -69,7 +69,7 @@ class CityORM implements iUrbanORM
         $city->location = $template->location ?? $city->location;
         $city->image_main_path = $template->image_main_path ?? $city->image_main_path;
         $city->active = $template->active ?? $city->active ?? true;
-        
+
         $city->save();
 
         return $city;
@@ -89,7 +89,7 @@ class CityORM implements iUrbanORM
         $alias = $templete->alias;
 
         if ($image->isValid()) {
-            $filename = $image->getClientOriginalName();
+            $filename = str_replace(' ', '_', $image->getClientOriginalName());
             $path = $image->storeAs("images/cities/$alias", $filename, 'public');
         }
         $templete->image_main_path = $path ?? null;

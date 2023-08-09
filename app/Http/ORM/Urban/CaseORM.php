@@ -94,7 +94,7 @@ class CaseORM implements iUrbanORM
         $alias = $templete->alias;
 
         if ($image->isValid()) {
-            $filename = $image->getClientOriginalName();
+            $filename = str_replace(' ', '_', $image->getClientOriginalName());
             $path = $image->storeAs("images/cases/$alias/first", $filename, 'public');
         }
 
@@ -115,7 +115,7 @@ class CaseORM implements iUrbanORM
 
         foreach ($images as $image) {
             if ($image->isValid()) {
-                $filename = $image->getClientOriginalName();
+                $filename = str_replace(' ', '_', $image->getClientOriginalName());
                 $path = $image->storeAs("images/cases/$alias/second", $filename, 'public');
                 $templete->saveSecondImg($path);
             }
