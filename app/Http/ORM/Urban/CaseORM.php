@@ -149,7 +149,7 @@ class CaseORM implements iUrbanORM
 
     public static function listByCity(int $cityId): object
     {
-        return Cases::query()->where('city_id', $cityId)->get();
+        return Cases::query()->where('active', 1)->where('city_id', $cityId)->get();
     }
 
     public static function listByCluster(int $clusterId): object
