@@ -38,10 +38,10 @@ Route::prefix('v1')->group(function () {
 
 
     Route::get('/city', [CityController::class, 'all']);
-    Route::get('/city/{cityId}/show', [CityController::class, 'show']);
+    Route::get('/city/{cityId}', [CityController::class, 'show']);
 
     Route::get('/cluster', [ClusterController::class, 'all']);
-    Route::get('/cluster/{clusterId}/show', [ClusterController::class, 'show']);
+    Route::get('/cluster/{clusterId}', [ClusterController::class, 'show']);
 
     Route::get('/case', [CaseController::class, 'all']);
     Route::get('/case/search/{search}', [CaseController::class, 'search']);
