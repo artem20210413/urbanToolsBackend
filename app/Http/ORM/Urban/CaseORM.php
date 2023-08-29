@@ -9,6 +9,7 @@ use App\Models\Cases;
 use App\Models\City;
 use App\Models\Cluster;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class CaseORM implements iUrbanORM
 {
@@ -169,16 +170,33 @@ class CaseORM implements iUrbanORM
 //                $query->where('name', 'like', '%' . $search . '%');
 //            })
 //            ->get();
+//        return Cases::query()
+//            ->where('active', 1)
+//            ->where('name', 'like', '%' . $search . '%')
+//            ->orWhereHas('city', function ($query) use ($search) {
+//                $query->where('name', 'like', '%' . $search . '%');
+//            })
+//            ->orWhereHas('cluster', function ($query) use ($search) {
+//                $query->where('name', 'like', '%' . $search . '%');
+//            })
+//            ->get();
         return Cases::query()
-            ->where('name', 'like', '%' . $search . '%')
-            ->orWhereHas('city', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
-            })
-            ->orWhereHas('cluster', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%');
+            ->where(function (Builder $query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere(function (Builder $query) use ($search) {
+                        $query->where('active', true) // Добавляем условие активности
+                        ->whereHas('city', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->orWhere(function (Builder $query) use ($search) {
+                        $query->where('active', true) // Добавляем условие активности
+                        ->whereHas('cluster', function ($query) use ($search) {
+                            $query->where('name', 'like', '%' . $search . '%');
+                        });
+                    });
             })
             ->get();
-
     }
 
 }
