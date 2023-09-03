@@ -27,6 +27,21 @@ class AuthController extends Controller
         }
     }
 
+//TODO добавить кастомный Request
+    public function changePassword(Request $request, AuthService $service)
+    {
+        try {
+            $credentials = $request->only( 'password', 'oldPassword');
+            $user = $service->changePassword(...$credentials);
+
+            return success($user);
+        } catch (ApiException $e) {
+
+            return error($e);
+        }
+    }
+
+
     public function logout()
     {
 

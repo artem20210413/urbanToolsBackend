@@ -24,6 +24,7 @@ Route::prefix('v1')->group(function () {
 
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::post('/registration', [AuthController::class, 'registration']);
+        Route::post('/change-password', [AuthController::class, 'changePassword']);
 
         Route::post('/city', [CityController::class, 'save']);
         Route::post('/city/{cityId}/active/{active}', [CityController::class, 'active']);

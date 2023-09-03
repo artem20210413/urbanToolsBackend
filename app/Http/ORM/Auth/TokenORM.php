@@ -27,7 +27,7 @@ class TokenORM implements iORM
         return UserToken::query()->where('id', $id)->where('active', 1)->first();
     }
 
-    static function search(?string $token)//: ?UserToken
+    static function search(?string $token)
     {
         return UserToken::query()->where('token', $token)->where('active', 1)->first();
     }

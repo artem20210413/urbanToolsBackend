@@ -66,5 +66,10 @@ class AuthService
             ->update(['active' => 0]);
     }
 
+    public function changePassword(string $password, string $oldPassword)
+    {
+        return UserORM::changePassword($password, $oldPassword);
+    }
+
 
 }

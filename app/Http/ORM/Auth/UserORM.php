@@ -2,9 +2,12 @@
 
 namespace App\Http\ORM\Auth;
 
+use App\Http\Controllers\Api\ApiException;
 use App\Http\ORM\iORM;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class UserORM implements iORM
 {
@@ -108,5 +111,32 @@ class UserORM implements iORM
         $user->save();
 
         return $user;
+    }
+
+    public static function setUser(?User $user)
+    {
+        Session::put('user', $user);
+    }
+
+    /**
+     * @return User
+     */
+    public static function getUser(): ?User
+    {
+        return Session::get('user');
+    }
+
+    public static function changePassword(string $newPassword, string $oldPassword)
+    {
+        $user = UserORM::getUser();
+//        dd(bcrypt($newPassword));
+        if (Hash::check($oldPassword, $user->password)) {
+            $user->setPasswordAttribute($newPassword);
+            $user->save();
+
+            return $user;
+        } else {
+            throw new ApiException('The old password was entered incorrectly');
+        }
     }
 }

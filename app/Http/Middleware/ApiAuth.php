@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\Api\ApiException;
+use App\Http\ORM\Auth\UserORM;
 use App\Providers\RouteServiceProvider;
 use App\Services\Auth\AuthService;
 use Closure;
@@ -24,7 +25,7 @@ class ApiAuth
             $token = $request->bearerToken();
             $service->lifeToken();
             $user = $service->check($token);
-
+            UserORM::setUser($user);
             if ($user) {
                 return $next($request);
             }
