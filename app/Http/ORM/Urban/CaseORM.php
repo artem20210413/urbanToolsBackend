@@ -181,6 +181,7 @@ class CaseORM implements iUrbanORM
 //            })
 //            ->get();
         return Cases::query()
+            ->where('active', true)
             ->where(function (Builder $query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere(function (Builder $query) use ($search) {
