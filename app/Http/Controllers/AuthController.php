@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\ApiException;
+use App\Http\ORM\Auth\UserORM;
 use App\Http\ORM\Urban\CityORM;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Models\City;
+use App\Models\User;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +17,6 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request, AuthService $service)
     {
-
         try {
             $credentials = $request->only('login', 'password');
             $user = $service->login(...$credentials);
@@ -31,7 +32,7 @@ class AuthController extends Controller
     public function changePassword(Request $request, AuthService $service)
     {
         try {
-            $credentials = $request->only( 'password', 'oldPassword');
+            $credentials = $request->only('password', 'oldPassword');
             $user = $service->changePassword(...$credentials);
 
             return success($user);
