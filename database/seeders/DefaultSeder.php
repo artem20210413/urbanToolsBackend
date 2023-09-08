@@ -16,7 +16,7 @@ class DefaultSeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'id' => 12,
+                'id' => 1,
                 'name' => 'admin',
                 'login' => 'admin',
                 'password' => Hash::make('Password123!'),
@@ -28,13 +28,14 @@ class DefaultSeder extends Seeder
         ]);
 
         DB::table('clusters')->insert([
+
             [
                 'id' => 1,
-                'name' => 'CITY/REGION',
+                'name' => 'BUILDING',
                 'description' => 'description',
                 'active' => 1,
-                'created_at' => '2023-08-09 10:26:13',
-                'updated_at' => '2023-08-21 12:00:02',
+                'created_at' => '2023-08-21 12:01:40',
+                'updated_at' => '2023-08-21 12:01:40',
             ],
             [
                 'id' => 2,
@@ -46,11 +47,11 @@ class DefaultSeder extends Seeder
             ],
             [
                 'id' => 3,
-                'name' => 'BUILDING',
+                'name' => 'CITY/REGION',
                 'description' => 'description',
                 'active' => 1,
-                'created_at' => '2023-08-21 12:01:40',
-                'updated_at' => '2023-08-21 12:01:40',
+                'created_at' => '2023-08-09 10:26:13',
+                'updated_at' => '2023-08-21 12:00:02',
             ],
         ]);
 
@@ -73,7 +74,7 @@ class DefaultSeder extends Seeder
         DB::table('cases')->insert([
             [
                 'id' => 1,
-                'cluster_id' => 1,
+                'cluster_id' => 3,
                 'city_id' => 1,
                 'name' => 'KASERNENHAUS',
                 'alias' => 'saaw3',

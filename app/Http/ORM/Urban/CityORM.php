@@ -82,6 +82,7 @@ class CityORM implements iUrbanORM
      */
     static function saveImages(mixed $templete, mixed $image): City|null
     {
+        //TODO удалять старую фотку перед скачиванием новой
         if (!$image) {
             return null;
         }
