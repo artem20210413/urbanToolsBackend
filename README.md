@@ -13,19 +13,19 @@
     DB_USERNAME=root
     DB_PASSWORD=
 
-### 3) Start openserver
+### 3) Start server
 
         - crate DB_DATABASE: "urban-tools"
 
-### 5) Rename file .env.loc to .env
+### 4) Rename file .env.loc to .env
 
-### 5) Unzip file 'public\storage.zip'
-
-### 6) Go to the server console and navigate to the project folder.
+### 5) Go to the server console and navigate to the project folder.
 
         - composer install
         - php artisan serve
         - php artisan migrate
         - php artisan db:seed
+        - php artisan storage:link
 
+### 6) Unzip the file “public\storage.zip” and transfer the files to the created directory "php artisan storage:link"
 
