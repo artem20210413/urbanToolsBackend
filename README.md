@@ -28,4 +28,5 @@
         - php artisan storage:link
 
 ### 6) Unzip the file “public\storage.zip” and transfer the files to the created directory "php artisan storage:link"
+### 7) If errors occur when entering the "php artisan storage:link" command, try deleting the "rm public/storage" folder and re-entering the "php artisan storage:link" command again. Don't forget to move the files from "public\storage.zip" to a new directory.
 
